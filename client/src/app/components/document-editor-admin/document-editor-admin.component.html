@@ -1,0 +1,68 @@
+<div class = "container-fluid ">
+    <div class = "row w-100 p-2 shadow-sm" >
+        <div class = "col-8">
+            <app-esri-map #esriMapComponent class = "w-100"
+            [defaultLayerUrl] = "doc.docMapUrl"
+            (mapPrintWidgetLoaded) = "mapPrintWidgetLoaded()" 
+            (mapExportedEvent) = "mapExported($event)"
+            [editAccess] = "true"
+            ></app-esri-map>
+        </div>
+
+        <div class = "col-4  shadow-sm align-items-center d-flex flex-column">
+            <div class = "w-100 text-center blockquote">{{doc.docTitle}}</div>
+            <div class = "w-100 d-flex flex-row justify-content-center align-items-center align-content-center">
+                <button mat-raised-button color = "primary">Load map</button>
+            </div>
+            <div class = "py-1 w-100 d-flex flex-row justify-content-center align-items-center align-content-center lead p-2">
+                <strong>Admin</strong> : {{doc.adminName}}
+            </div>
+            <div class = "py-1 w-100 d-flex flex-row justify-content-center align-items-center align-content-center lead p-2">
+                <strong>Status</strong> : {{doc.status}}
+            </div>
+            <table mat-table [dataSource]="signerData" class = "w-100">
+                <ng-container matColumnDef="signerName">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let signer"> {{signer.signerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="approvalStatus">
+                    <th mat-header-cell *matHeaderCellDef> Approval </th>
+                    <td mat-cell *matCellDef="let signer"> {{signer.signerApprovalStatus}} </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="editAccess">
+                    <th mat-header-cell *matHeaderCellDef> Edit Access </th>
+                    <td mat-cell *matCellDef="let signer">
+                        <div class = "d-flex flex-row align-items-center">
+                        <p>
+                            {{signer.signerEditAccess ? 'YES' : 'NO'}} <br> 
+                            <small class = "text-success">{{signer.requestingAccess ? '(access requested)' : ''}}</small>
+                        </p>
+                        <button style = "height:35px" *ngIf = "!signer.signerEditAccess" (click) = "changeSignerEditAccess('YES',signer)" mat-raised-button color = "primary">Grant</button>
+                        <button style = "height:35px" *ngIf = "signer.signerEditAccess" (click) = "changeSignerEditAccess('NO',signer)" mat-raised-button color = "warn">Revoke</button>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="signStatus">
+                    <th mat-header-cell *matHeaderCellDef> Signed </th>
+                    <td mat-cell *matCellDef="let signer"> {{signer.signerSignStatus ? 'YES' : 'NO'}} </td>
+                </ng-container>
+
+                
+                <tr mat-header-row *matHeaderRowDef="signersColumnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let signerData; columns: signersColumnsToDisplay"></tr>
+            </table>
+            
+        </div>
+
+    </div>
+    <div class = "row w-100">
+
+        <div class = "col-sm-7">
+            <app-comments-viewer [doc] = "doc" (reloadDocEvent) = "reloadDoc()"></app-comments-viewer>
+        </div>
+        <div class = "col-sm-5">
+            <app-checkpoint [editAccess] = "true" (loadPrintWidgetEvent) = "loadMapPrintWidget()" [doc] = "doc" (reloadDocEvent) = "reloadDoc()"></app-checkpoint>
+        </div>
+    </div>
+</div>

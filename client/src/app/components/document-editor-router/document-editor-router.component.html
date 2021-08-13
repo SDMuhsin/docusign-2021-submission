@@ -1,0 +1,22 @@
+<div class = "container-fluid h-100 p-2">
+    <mat-form-field appearance = "fill">
+        <mat-label>Use as</mat-label>
+        <mat-select (selectionChange) = "onModeChange()" [(ngModel)] = "currentMode">
+            <mat-option [value] ="'signer'">Signer</mat-option>
+            <mat-option [value] ="'admin'">Admin</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance = "fill">
+        <mat-label>Select document to edit</mat-label>
+        <mat-select (selectionChange)="onDocChange()" [(ngModel)] = "currentDocument" >
+            <mat-option [value] = '-1'>None</mat-option>
+            <mat-option *ngFor = "let doc of myDocuments;index as i" [value] = "i">{{doc.docTitle}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div *ngIf = "currentMode == 'admin' && currentDocument != -1 ">
+        <app-document-editor-admin (updateParentEvent) = "getDocuments()" [doc] = "myDocuments[currentDocument]" ></app-document-editor-admin>
+    </div>
+    <div *ngIf = "currentMode == 'signer' && currentDocument != -1 ">
+        <app-document-editor-signer  (reloadDocEvent) = "getDocuments()" [doc] = "myDocuments[currentDocument]" ></app-document-editor-signer>
+    </div>
+</div>

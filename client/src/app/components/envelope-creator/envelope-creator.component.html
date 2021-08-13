@@ -1,0 +1,61 @@
+<div class = "container-fluid h-100">
+    
+    <div class = "w-100 d-flex justify-content-between py-2">
+        <div class = "col-6 shadow-sm" style = "max-height:500px">
+            <app-esri-map [defaultLayerUrl] = "docMapUrl" [editAccess] = "true" #mapComponent></app-esri-map>
+        </div>
+
+        <div class = "shadow-sm p-2 justify-content-center d-flex flex-column">
+            <p class = "w-100 text-center">Create new document</p>
+            <mat-form-field appearance="fill">
+                <mat-label>Document title :</mat-label>
+                <input [(ngModel)] = "docTitle" matInput type = "text">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Webmap portal ID : </mat-label>
+                <input [(ngModel)] = "docMapUrl" matInput type = "text">
+            </mat-form-field>
+            <button mat-raised-button color = "primary" (click) = "mapComponent.loadMap()" >Load Map</button>
+            <div class = "w-100 shadow-sm py-2">
+                <p class = "text-center w-100">Signers</p>
+                <div class = "p-2 d-flex flex-row justify-content-between" *ngFor = "let ds of docSigners;index as i" >
+                    <mat-form-field appearance="fill">
+                        <mat-label>Name</mat-label>
+                        <input [disabled]= "true"  matInput type = "text" value = {{ds.signerName}}>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Email</mat-label>
+                        <input [disabled]= "true"  matInput type = "text" value = {{ds.signerEmail}}>
+                    </mat-form-field>
+                    <button (click) = "deleteSigner(i)" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
+                        <mat-icon>delete</mat-icon>
+                     </button>
+                </div>
+                <div class = "p-2 d-flex flex-row justify-content-between">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Name</mat-label>
+                        <input   matInput type = "text" [(ngModel)] = "newDocSignerName">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Email</mat-label>
+                        <input  matInput type = "text" [(ngModel)] = "newDocSignerEmail">
+                    </mat-form-field>
+                    <mat-form-field appearance = "fill">
+                        <mat-label>Edit access : </mat-label>
+                        <mat-select [(ngModel)] = "newDocSignerEditAccess">
+                            <mat-option [value] = 'true'>Yes</mat-option>
+                            <mat-option [value] = 'false'>No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button (click) = "addSigner()" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
+                        <mat-icon>plus_one</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <p class= "w-100 text-center">{{docSubmitStatusMsg}}</p>
+            <div class = "w-100 d-flex justify-content-center my-2">
+                <button color = "primary" mat-raised-button (click) = "submitNewDocument()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

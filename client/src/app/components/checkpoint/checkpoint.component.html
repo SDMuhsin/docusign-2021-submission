@@ -1,0 +1,27 @@
+<div class = "container-fluid d-flex flex-column justify-content-start">
+    <div class = "w-100 text-center py-2">
+        <strong>Save checkpoint</strong>
+    </div>
+    <div class = "w-100 d-flex justify-content-center"> 
+        <button [disabled]= "!editAccess"  mat-raised-button class = "text-light" color = "primary" (click) = "startCheckpoint()">Save Checkpoint</button>
+    </div>
+    <div class = "p-2 w-100" *ngIf = "checkpointProcessStarted">
+        <mat-list class = "w-100" role="list">
+            <mat-list-item role="listitem">
+                Load Export Widget:
+                <mat-spinner *ngIf = "exportWidgetStatus == 'LOADING' " diameter = "20"></mat-spinner>
+                <mat-icon *ngIf = "exportWidgetStatus == 'COMPLETE'">check</mat-icon>
+            </mat-list-item>
+            <mat-list-item role="listitem">Export as PNG<small>(Click export)</small>:
+                 <mat-spinner *ngIf = "exportStatus == 'IDLE' || exportStatus == 'LOADING'" diameter = "20"></mat-spinner>
+                 <mat-icon *ngIf = "exportStatus == 'COMPLETE'">check</mat-icon>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                Save checkpoint : 
+                <mat-spinner *ngIf = "checkpointStatus == 'IDLE' || checkpointtStatus == 'LOADING'" diameter = "20"></mat-spinner>
+                <mat-icon *ngIf = "checkpointStatus == 'COMPLETE'">check</mat-icon>    
+            </mat-list-item>
+          </mat-list>
+    </div>
+    <app-simple-checkpoint-viewer [doc] = "doc" [editAccess] = "editAccess" ></app-simple-checkpoint-viewer>  
+</div>

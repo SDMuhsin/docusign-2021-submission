@@ -1,0 +1,28 @@
+
+<div class = "container-fluid d-flex flex-row w-100" >
+    <div class = "d-flex flex-column py-2 align-items-center justify-content-between">
+        <button mat-raised-button color = "primary" (click) = "loadMap()"> Load map</button>
+        
+        <button mat-raised-button *ngIf = "!areaWidgetActive" (click) = "loadAreaWidget()" color = "primary">Area Widget</button>
+        <button mat-raised-button *ngIf = "areaWidgetActive"  (click) = "removeAreaWidget()" color = "warn">Area Widget</button>
+        
+        <button mat-raised-button *ngIf = "!legendWidgetActive" (click) = "loadLegendWidget()" color = "primary">Legend Widget</button>
+        <button mat-raised-button *ngIf = "legendWidgetActive"  (click) = "removeLegendWidget()" color = "warn">Legend Widget</button>
+
+        <button mat-raised-button *ngIf = "!sketchActive"  (click) = "loadSketchWidget()" color = "primary">Sketch</button>
+        <button mat-raised-button *ngIf = "sketchActive"  (click) = "removeSketchWidget()" color = "warn">Sketch</button>
+
+        <button mat-raised-button *ngIf = "!polygonEditorActive" [disabled] = "!editAccess" (click) = "loadPolygonEditor()" color = "primary">Editor</button>
+        <button mat-raised-button *ngIf = "polygonEditorActive" [disabled] = "!editAccess" (click) = "removePolygonEditor()" color = "warn">Editor</button>
+        
+        <mat-form-field>
+            <mat-label>Custom layer URL : </mat-label>
+            <input matInput type = "text" [(ngModel)] = "customLayerUrl" />
+        </mat-form-field>
+        <button mat-raised-button (click) = "loadCustomLayer()" color = "primary">Load custom layer</button>
+    </div>
+    
+    <div style = "width:800px;height:450px" >
+        <div style = "padding: 0; margin: 0; height: 100%; width: 100%; overflow: hidden;" #mapViewNode></div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div class = "container-fluid p-2">
+    <div class = "row w-100 d-flex flex-row align-items-center justify-content-center">
+        <mat-form-field>
+            <mat-label>Checkpoint</mat-label>
+            <mat-select [(ngModel)] = "currentCheckpointId">
+                <mat-option *ngFor = "let c of history;index as i" value = {{c.checkpoint_id}}>
+                    {{i}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button  mat-raised-button color = "primary" (click) = "showCheckpointImg(currentCheckpointId)" style = "height:35px"> Show </button>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class = "container-fluid ">
+    <div class = "row w-100  p-2 shadow-sm" >
+        <div class = "col-sm-8 ">
+            
+            <app-esri-map #esriMapComponent class = "w-100" (mapPrintWidgetLoaded) = "mapPrintWidgetLoaded()" 
+            [defaultLayerUrl] = "doc.docMapUrl"
+            (mapExportedEvent) = "mapExported($event)"
+            [editAccess] = "myData.signerEditAccess"
+            ></app-esri-map>
+        </div>
+        <div class = "col-sm-4 p-2 shadow-sm align-items-center d-flex flex-column">
+            <div class = "w-100 text-center blockquote">{{doc.docTitle}}</div>
+            <div class = " w-100 d-flex flex-row justify-content-center align-items-center align-content-center p-1">
+                <strong>Admin</strong> : {{doc.adminName}}
+            </div>
+            <div class = " w-100 d-flex flex-row justify-content-center align-items-center align-content-center p-1">
+                <strong>Status</strong> : {{doc.status}}
+            </div>
+
+            <table *ngIf = "false" mat-table [dataSource]="doc.docSigners" class = "shadow-sm w-100">
+
+                <ng-container matColumnDef="signerName">
+                    <th mat-header-cell *matHeaderCellDef> Signer Name </th>
+                    <td mat-cell *matCellDef="let signer"> {{signer.signerName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="signerApprovalStatus">
+                    <th mat-header-cell *matHeaderCellDef> Signer Approval </th>
+                    <td mat-cell *matCellDef="let signer"> {{signer.signerApprovalStatus}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="meteDataDisplayColumns"></tr>
+                <tr mat-row *matRowDef="let myRowData; columns: meteDataDisplayColumns"></tr>
+            </table>
+            <div class = "p-2  mat-elevation-z2 w-100 d-flex flex-column align-items-center">
+                <div class = " text-center p-1 w-100"><strong>Your details :</strong> </div>
+                <div class = " text-center p-1 w-100">{{myData.signerName}} </div>
+                <div class = " text-center p-1 w-100"><strong>Edit Access: </strong> <span [ngClass] = "{'text-success':myData.signerEditAccess}" >{{myData.signerEditAccess ? "YES" : "NO"}}</span> <small *ngIf = "myData.requestingAccess && !myData.signerEditAccess">(requested)</small> </div>
+                <div class = " text-center p-1 w-100"><strong>Approval: </strong> <span  [ngClass]= "{'text-success': myData.signerApprovalStatus == 'APPROVED', 'text-danger': myData.signerApprovalStatus == 'PENDING'}"> {{myData.signerApprovalStatus}}</span> </div>
+                <div class = " text-center p-1 w-100"><strong>Signature: </strong> <span  [ngClass]= "{'text-success': myData.signerSignStatus, 'text-danger': !myData.signerSignStatus}"> {{myData.signerSignStatus ? "SIGNED" : "NOT SIGNED"}}</span> </div>
+                <button class = "my-1" mat-raised-button color = "primary" (click) = "requestEditAccess()" [disabled] = "myData.signerEditAccess || myData.requestingAccess">Request Edit Access</button>
+                <button  *ngIf = "myData.signerApprovalStatus == 'APPROVED'" class = "my-1" mat-raised-button color = "warn" (click) = "toggleApprovalStatus()">
+                    DISAPPROVE
+                </button>
+                <button  *ngIf = "myData.signerApprovalStatus == 'PENDING'" class = "my-1" mat-raised-button color = "primary" (click) = "toggleApprovalStatus()">
+                    {{
+                        myData.signerApprovalStatus == 'APPROVED' ? 'UNAPPROVE' : 'APPROVE'
+                    }}
+    
+                </button>
+                <button (click) = "sign()" mat-raised-button color = "primary" *ngIf = "doc.envelopeStatus && !myData.signerSignStatus">
+                    SIGN 
+                </button>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <div class = "row w-100 p-2 shadow-sm" >
+        
+        <div class = "col-sm-7  p-2 ">
+            <app-comments-viewer [doc] = "doc" (reloadDocEvent) = "reloadDoc()"></app-comments-viewer>
+        </div>
+        <div class = "col-5  flex-row justify-content-center p-2">
+            <app-checkpoint  [editAccess] = "myData.signerEditAccess" (loadPrintWidgetEvent) = "loadMapPrintWidget()" [doc] = "doc" (reloadDocEvent) = "reloadDoc()"></app-checkpoint>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class = "container-fluid h-100 w-100 ">
+    <div class = "row p-2 w-100 justify-content-center" >
+        <div class = "col-4 shadow-sm p-2">
+            <mat-tab-group mat-align-tabs = "center"> 
+                <mat-tab label="Signup">
+                    <div *ngIf="!isLoggedIn" class = "container-fluid d-flex flex-column justify-content-center py-4">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Username </mat-label>
+                            <input [(ngModel)] = "signUpUsername" matInput type = "text">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input [(ngModel)] = "signUpEmail" matInput type = "text">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Password </mat-label>
+                            <input [(ngModel)] = "signUpPassword" matInput type = "password">
+                        </mat-form-field>
+                        <button (click) = "signUp()"mat-raised-button color = "primary">
+                            Create Account
+                        </button>
+                        <p class = "w-100 text-center">
+                            {{signUpStateMsg}}
+                        </p>
+                    </div>
+
+                    <div *ngIf = "isLoggedIn" class = "container-fluid py-4 h-100 d-flex justify-content-center">
+                        <button (click) = "logOut()" mat-raised-button class = "my-4" color = "primary">
+                            Log Out
+                        </button>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Login">
+                    <div *ngIf = "!isLoggedIn" class = "container-fluid d-flex flex-column justify-content-center py-4">
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input [(ngModel)] = "logInEmail" matInput type = "text">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Password </mat-label>
+                            <input [(ngModel)] = "logInPassword" matInput type = "password">
+                        </mat-form-field>
+                        <button (click) = "logIn()" mat-raised-button color = "primary">
+                            log In
+                        </button>
+                        <p class = "w-100 text-center">
+                            {{logInStateMsg}}
+                        </p>
+                    </div>
+                    <div *ngIf = "isLoggedIn" class = "container-fluid py-4 h-100 d-flex justify-content-center">
+                        <button (click) = "logOut()" mat-raised-button class = "my-4" color = "primary">
+                            Log Out
+                        </button>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

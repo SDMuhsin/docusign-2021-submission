@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click) = "dashboard.toggleSideNav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{userEmail}}</span>
+  <span class="example-spacer"></span>
+
+  <button *ngIf = "isLoggedIn"  (click) = "logOut()" mat-icon-button >
+    Log Out
+  </button>
+  <button *ngIf = "!isLoggedIn" routerLink = 'accounts' mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    Log In
+  </button>
+</mat-toolbar>
+<app-dashboard #dashboard (authEvent) = "authCheck()"> </app-dashboard>

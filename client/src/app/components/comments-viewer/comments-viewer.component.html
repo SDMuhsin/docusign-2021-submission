@@ -1,0 +1,100 @@
+<div class = "container-fluid w-100" >
+    <div class = "row w-100 d-flex justify-content-center" >
+        <div class = "col-sm-4 d-flex flex-column "  >
+            <strong class = "text-center w-100 mt-2">Comments</strong>
+            <button mat-raised-button color = "primary" *ngIf = "currentMode == 'EDIT'" (click) = "currentMode ='CREATE' " >Create Comment</button>
+            <div *ngFor = "let comment of comments;index as i" style = "cursor:pointer">
+                <div (click) = "editComment(i)" class = "container-fluid d-flex flex-row justify-content-between shadow-sm py-2">
+                    <div>
+                        {{comment.title}}
+                    </div>
+                    <div>
+                        <div class = "text-danger" *ngIf = "comment.status.status == 'RAISED' ">{{comment.status.status}}</div>
+                        <div class = "text-primary" *ngIf = "comment.status.status == 'ADDRESSED' ">{{comment.status.status}}</div>
+                        <div class = "text-success" *ngIf = "comment.status.status == 'RESOLVED' ">{{comment.status.status}}</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div  class = "col-sm-8 shadow-sm" >
+            <div  class = "container-fluid d-flex flex-column" *ngIf = "currentMode == 'CREATE'" >
+                <strong class = "text-center py-2"> Create New Comment</strong>
+                <mat-form-field appearance="fill">
+                    <mat-label>Title </mat-label>
+                    <input [(ngModel)] = "newCommentTitle" matInput type = "text">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Type </mat-label>
+                    <mat-select [(ngModel)] = "newCommentType">
+                        <mat-option [value] = "'TYPE1'">
+                            TYPE1
+                        </mat-option>
+                        <mat-option [value] = "'TYPE2'">
+                            TYPE2
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Description </mat-label>
+                    <textarea [(ngModel)] = "newCommentDescription" matInput type = "text"></textarea>
+                </mat-form-field>
+                <button mat-raised-button [color] = "primary" (click) = "createComment()">Create comment</button>
+            </div>
+            <div *ngIf = "currentMode == 'EDIT'"  class = "container-fluid d-flex flex-column justify-content-center" >
+                <div class = "text-center mt-4"> Edit comment</div>
+                <div class = "lead text-center">
+                    <strong> {{comments[currentViewCommentIndex].title}}</strong>
+                </div>
+                <p class = "lead p-2 my-1">
+                    {{comments[currentViewCommentIndex].description}}
+                </p>
+                <div class = "w-100 d-flex flex-row justify-content-center">
+                    <div class ="p-2 d-flex flex-column shadow-sm">
+                        <strong class = "w-100 text-center">Created </strong>
+                        <p class = "w-100 text-center">
+                        by {{comments[currentViewCommentIndex].created.by}}
+                        </p>
+                        <p class = "w-100 text-center">
+                        on {{comments[currentViewCommentIndex].created.on}}
+                        </p>
+                    </div>
+                    <div class ="p-2 d-flex flex-column shadow-sm">
+                        <strong class = "w-100 text-center">Current Status </strong>
+                        <p class = "w-100 text-center" >
+                            {{comments[currentViewCommentIndex].status.status}}
+                        </p>
+                        <p class = "w-100 text-center">
+                            <small> Last updated by {{comments[currentViewCommentIndex].status.last_updated_by}}</small>
+                        </p>    
+                    </div>
+                    <div class ="p-2 d-flex flex-column shadow-sm justify-content-center px-2">
+                        <button mat-raised-button (click) = "updateCommentStatus('RAISED')" class = "bg-danger text-light" [disabled] = "comments[currentViewCommentIndex].status.status == 'RAISED'"> RAISE</button>
+                        <button mat-raised-button (click) = "updateCommentStatus('ADDRESSED')" class = "bg-primary text-light" [disabled] = "comments[currentViewCommentIndex].status.status == 'ADDRESSED'"> ADDRESS</button>
+                        <button mat-raised-button (click) = "updateCommentStatus('RESOLVED')" class = "bg-success text-light" [disabled] = "comments[currentViewCommentIndex].status.status == 'RESOLVED'"> RESOLVE</button>
+
+                    </div>
+
+                </div>
+                <div class = "w-100 py-2 d-flex flex-column p-2 justify-content-center overflow-auto " style = "height:300px">
+                    
+                    <div class = "w-100 p-2 shadow-sm" *ngFor = "let msg of comments[currentViewCommentIndex].thread;index as i">
+                        <p class = "w-100">{{msg.msg}}</p>
+                        
+                        <small class = ""> - {{msg.created.by}} </small>
+                    </div>
+                </div>
+                <div class = "d-flex flex-row justify-content-between">
+                
+                    <mat-form-field>
+                        <mat-label>New message : </mat-label>
+                        <input type = "text" [(ngModel)] = "newThreadMessage" matInput />
+                        
+                    </mat-form-field>
+                
+                <button mat-icon-button (click) = "addThreadMsg()"> <mat-icon>send</mat-icon> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
